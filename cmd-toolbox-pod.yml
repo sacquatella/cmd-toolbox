@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: cmd-toolbox
+    labels: 
+      app: toolbox
+spec:
+  containers:
+  - name: cmd-toolbox
+    image: onelans/cmd-toolbox:0.4
+    env:
+        - name: POWERLINE
+          value: "FALSE"
