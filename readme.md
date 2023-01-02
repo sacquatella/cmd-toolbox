@@ -44,16 +44,16 @@ Ubuntu :
 ```bash
 $ docker run -it --rm onelans/cmd-toolbox:1.0.0-ubuntu bash
 ```
-This will drop you into an bash shell to allow you to do what you want inside a Ubuntu system.
+This will drop you into a bash shell to allow you to do what you want inside a Ubuntu system.
 
 Alpine 
 ```bash
 $ docker run -it --rm onelans/cmd-toolbox:1.0.0-alpine bash
 ```
 
-This will drop you into an bash shell to allow you to do what you want inside a Ubuntu system.
+This will drop you into a bash shell to allow you to do what you want inside an Alpine system.
 
-If your want activate powerline add `-e "POWERLINE=TRUE"`
+If you want to activate powerline add `-e "POWERLINE=TRUE"`
 ```bash
 $ docker run -it -e "POWERLINE=TRUE" --rm onelans/cmd-toolbox:1.0.0-ubuntu bash
 ```
