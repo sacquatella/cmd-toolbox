@@ -7,7 +7,7 @@ metadata:
 spec:
   containers:
   - name: cmd-toolbox
-    image: onelans/cmd-toolbox:0.4
-    env:
+    image: onelans/cmd-toolbox:1.0.0-alpine
+     env:
         - name: POWERLINE
           value: "FALSE"

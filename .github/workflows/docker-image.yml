@@ -2,9 +2,8 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    tags:
+      - '*'
 
 jobs:
 
@@ -21,10 +20,10 @@ jobs:
       run: |
        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: Build the Ubuntu Docker image
-      run: docker build . --file Dockerfile-ubuntu --tag onelans/cmd-toolbox:1.0.0-ubuntu
+      run: docker build . --file Dockerfile-ubuntu --tag onelans/cmd-toolbox:${GITHUB_REF_NAME}-ubuntu
     - name: Publish Ubuntu image to dockerhub
-      run: docker push onelans/cmd-toolbox:1.0.0-ubuntu
+      run: docker push onelans/cmd-toolbox:${GITHUB_REF_NAME}-ubuntu
     - name: Build the Alpine Docker image
-      run: docker build . --file Dockerfile-alpine --tag onelans/cmd-toolbox:1.0.0-alpine
+      run: docker build . --file Dockerfile-alpine --tag onelans/cmd-toolbox:${GITHUB_REF_NAME}-alpine
     - name: Publish Ubuntu image to dockerhub
-      run: docker push onelans/cmd-toolbox:1.0.0-alpine
+      run: docker push onelans/cmd-toolbox:${GITHUB_REF_NAME}-alpine
