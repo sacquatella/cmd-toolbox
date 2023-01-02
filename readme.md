@@ -1,36 +1,37 @@
 # CMD Toolbox
-Ubuntu image with a set of command line tools preinstalled 
+Ubuntu or Alpine image with a set of command line tools preinstalled 
 
-- cbm
-- curl
-- emacs-nox
-- gettext
-- git
-- htop
-- iftop
-- kubectl
-- ldap-util
-- mc
+- gettext 
+- git 
+- curl 
+- emacs-nox 
+- vim 
+- wget 
+- tig 
+- mc 
+- tmux 
+- ranger 
+- htop 
+- siege 
+- tshark 
+- ncdu 
+- iftop 
+- cbm 
+- speedometer 
+- tree 
+- python-pip 
+- powerline 
 - nano
-- nc
-- ncdu
-- powerline
-- python-pip
-- ranger
-- siege
-- speedometer
-- telnet
-- tig
-- tmux
-- tree
 - vegeta
-- vim
-- wget
+- kubectl
+- telnet
+- nc
 - zookeepercli
+- ldap-util
 
 ## local build
 ```bash
-docker build . -t cmd-toolbox:v0.4
+docker build . -t cmd-toolbox:v0.1
 ```
 
 ## Run
@@ -38,14 +39,15 @@ docker build . -t cmd-toolbox:v0.4
 ### Docker
 
 ```bash
-$ docker run -it --rm onelans/cmd-toolbox:0.4
+$ docker run -it --rm onelans/cmd-toolbox:latest
 ```
 This will drop you into an bash shell to allow you to do what you want inside a Ubuntu system.
 
 If your want activate powerline add `-e "POWERLINE=TRUE"`
 ```bash
-$ docker run -it -e "POWERLINE=TRUE" --rm onelans/cmd-toolbox:0.4
+$ docker run -it -e "POWERLINE=TRUE" --rm onelans/cmd-toolbox:latest
 ```
+
 
 ### Kubernetes
 
@@ -55,5 +57,5 @@ kubectl exec -ti cmd-toolbox bash
 ```
 or 
 ```bash
-kubectl run -it --tty cmdbox --image=onelans/cmd-toolbox:0.4 --restart=Never -- bash
+kubectl run -it --tty cmdbox --image=onelans/cmd-toolbox:latest --restart=Never -- bash
 ``` 

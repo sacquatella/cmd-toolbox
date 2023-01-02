@@ -1,0 +1,63 @@
+FROM alpine
+
+
+LABEL org.label-schema.name="cmd-toolbox"
+LABEL org.label-schema.description="Alpine image with a set of command line tools preinstalled."
+LABEL org.label-schema.usage="https://github.com/sacquatella/cmd-toolbox/readme.md"
+LABEL org.label-schema.docker.cmd="docker run -it -e \"POWERLINE=TRUE\" --rm onelans/cmd-toolbox-alpine:latest bash"
+
+ENV PIP_ROOT_USER_ACTION=ignore
+
+RUN apk update \
+    && apk add \
+       bash \
+       gettext \
+       git \
+       curl \
+       emacs-nox \
+       vim \
+       wget \
+       tig \
+       mc \
+       tmux \
+       ranger \
+       htop \
+#       siege \
+#       tshark \
+       tcpdump \
+       ncdu \
+       iftop \
+#       cbm \
+#       speedometer \
+       tree \
+       py3-pip \
+#       powerline \
+       nano \
+       apache2-utils \
+#       yaml-mode golang-mode \
+       iputils \
+       bind-tools \
+       go \
+#       telnet \
+#       ldap-utils \
+#       netcat \
+     && pip3 install --upgrade setuptools \ 
+     && pip3 --disable-pip-version-check -q install wheel \
+     && pip3 --disable-pip-version-check -q install powerline-gitstatus \
+     && pip3 --disable-pip-version-check -q install cqlsh \
+     && pip3 --disable-pip-version-check -q install powerline-status \
+     && apkArch="$(apk --print-arch)" \
+     && curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/${apkArch}/kubectl \
+     && go install github.com/tsenart/vegeta@latest \
+#     && apk cache clean \
+     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apk/*
+
+COPY bash-powerline-alpine.sh bash-powerline.sh
+COPY init.el ~/.emacs.d/init.el
+RUN  cat /bash-powerline.sh >> /root/.bashrc
+
+RUN mv /kubectl /usr/local/bin
+RUN chmod +x /usr/local/bin/kubectl
+
+
+CMD ["sh", "-c", "tail -f /dev/null"]

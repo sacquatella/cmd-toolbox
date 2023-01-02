@@ -1,0 +1,74 @@
+FROM ubuntu:22.04
+
+LABEL org.label-schema.name="cmd-toolbox"
+LABEL org.label-schema.description="Ubuntu image with a set of command line tools preinstalled. Run as nonroot"
+LABEL org.label-schema.usage="https://github.com/sacquatella/cmd-toolbox/readme.md"
+LABEL org.label-schema.docker.cmd="docker run -it -e \"POWERLINE=TRUE\" --rm onelans/cmd-toolbox:latest bash"
+
+ENV PIP_ROOT_USER_ACTION=ignore
+
+RUN apt-get update \
+    && apt-get install -yq \
+       apache2-utils \
+       cbm \
+       curl \
+       dnsutils \
+       emacs-nox \
+       gettext \
+       git \
+       htop \
+       iftop \
+       iputils-ping \
+       ldap-utils \
+       mc \
+       nano \
+       ncdu \
+       netcat \
+       powerline \
+       python3-pip \
+       ranger \
+       siege \
+       speedometer \
+       telnet \
+       tig \
+       tmux \
+       tree \
+ #      dumpcap \
+ #      tshark \
+       vim \
+       wget \
+       yaml-mode golang-mode \
+       golang \
+# Add Powerline    
+#     && pip3 install --upgrade setuptools \
+     && pip3 --disable-pip-version-check -q install wheel \
+#     && pip3 --root-user-action=ignore --disable-pip-version-check -q install powerline-gitstatus \
+# Add cqlsh (cassandra cli)
+     && pip3 --disable-pip-version-check -q install cqlsh \
+# Get current arch
+     && dpkgArch="$(dpkg --print-architecture)" \
+# Add   kubectl
+     && curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/${dpkgArch}/kubectl \
+     && mv /kubectl /usr/local/bin \
+     && chmod +x /usr/local/bin/kubectl \
+# Add Helm3 client
+    && curl -L https://get.helm.sh/helm-v3.10.0-linux-${dpkgArch}.tar.gz -o helm.tar.gz \
+    && tar zxf helm.tar.gz \
+    && mv linux-${dpkgArch}/helm /usr/local/bin \
+    && rm -rf helm.tar.gz linux-${dpkgArch} \
+# Add Vegeta 
+    && go install github.com/tsenart/vegeta@latest \
+## Clean
+     && apt-get clean \
+     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+## powerline config
+COPY bash-powerline.sh bash-powerline.sh
+COPY init.el ~/.emacs.d/init.el
+
+## define nonroot user
+RUN  adduser --system --ingroup users ubuntu
+RUN  cat /bash-powerline.sh >> /home/ubuntu/.bashrc
+USER ubuntu
+
+CMD ["sh", "-c", "tail -f /dev/null"]
